@@ -17,7 +17,7 @@ def test_rag_api_relevancy_and_faithfulness():
     
     # 2. Hit our FastAPI endpoint
     response = client.post("/ask", json={"query": question})
-    assert response.status_code == 200
+    assert response.status_code == 200, f"API Error: {response.text}"
     
     data = response.json()
     actual_answer = data["answer"]
