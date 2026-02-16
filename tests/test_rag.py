@@ -24,7 +24,7 @@ def test_rag_api_relevancy_and_faithfulness():
     retrieval_context = [data["context"]]
     
     # 3. Setup Gemini as the DeepEval "Judge"
-    eval_model = GeminiModel(model="gemini-2.5-flash")
+    eval_model = GeminiModel(model="gemini-2.5-flash-lite")
     
     # 4. Define DeepEval Metrics
     
