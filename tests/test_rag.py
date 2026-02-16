@@ -8,8 +8,11 @@ from deepeval.metrics import AnswerRelevancyMetric, FaithfulnessMetric
 from deepeval.models import GeminiModel
 from app.main import app
 
-# Create a test client to hit our API without running a live server
-client = TestClient(app)
+@pytest.fixture
+def client():
+    # This 'with' block forces FastAPI to run the lifespan function!
+    with TestClient(app) as c:
+        yield c
 
 def test_rag_api_relevancy_and_faithfulness():
     # 1. Simulate a user asking a question
