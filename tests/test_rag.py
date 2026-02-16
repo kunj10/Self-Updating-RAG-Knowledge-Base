@@ -14,7 +14,7 @@ def client():
     with TestClient(app) as c:
         yield c
 
-def test_rag_api_relevancy_and_faithfulness():
+def test_rag_api_relevancy_and_faithfulness(client):
     # 1. Simulate a user asking a question
     question = "What features does MyTax support?"
     
