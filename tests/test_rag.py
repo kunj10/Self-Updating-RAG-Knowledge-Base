@@ -1,12 +1,18 @@
 import os
 import pytest
+import json
 from fastapi.testclient import TestClient
-
 from deepeval import assert_test
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import AnswerRelevancyMetric, FaithfulnessMetric
 from deepeval.models import GeminiModel
 from app.main import app
+
+
+def load_golden_data():
+    with open("golden_dataset.json", "r") as f:
+        return json.load(f)
+
 
 @pytest.fixture
 def client():
@@ -14,9 +20,10 @@ def client():
     with TestClient(app) as c:
         yield c
 
-def test_rag_api_relevancy_and_faithfulness(client):
+@pytest.mark.parametrize("case", load_golden_data())
+def test_rag_api_relevancy_and_faithfulness(client, case):
     # 1. Simulate a user asking a question
-    question = "What features does MyTax support?"
+    question = case["input"]
     
     # 2. Hit our FastAPI endpoint
     response = client.post("/ask", json={"query": question})

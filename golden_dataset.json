@@ -1,0 +1,36 @@
+[
+  {
+    "input": "What is MyTax?",
+    "expected_output": "MyTax is a modern GST compliance and billing software designed for Indian businesses.",
+    "context": [
+      "MyTax is a modern GST compliance and billing software designed for Indian businesses."
+    ]
+  },
+  {
+    "input": "How can I contact MyTax support?",
+    "expected_output": "You can reach the MyTax support team at support@mytax.com.",
+    "context": [
+      "The MyTax support team can be reached at support@mytax.com."
+    ]
+  },
+  {
+    "input": "Does MyTax support e-invoicing and can multiple team members use it?",
+    "expected_output": "Yes, MyTax supports e-invoicing and allows multi-user access for enterprise teams.",
+    "context": [
+      "MyTax supports e-invoicing.",
+      "MyTax allows multi-user access for enterprise teams."
+    ]
+  },
+  {
+    "input": "What is the pricing for MyTax premium plan?",
+    "expected_output": "I don't know. The pricing information for MyTax is not available in the current knowledge base.",
+    "context": []
+  },
+  {
+    "input": "does mytax hav automted gst filing feature",
+    "expected_output": "Yes, MyTax supports automated GST return filing.",
+    "context": [
+      "MyTax supports automated GST return filing."
+    ]
+  }
+]
