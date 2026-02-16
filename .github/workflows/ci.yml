@@ -26,7 +26,7 @@ jobs:
       - name: Install Dependencies
         run: |
           uv venv
-          uv pip install fastapi uvicorn deepeval pytest google-genai
+          uv pip install fastapi uvicorn deepeval pytest google-genai faiss-cpu numpy
 
       - name: Run DeepEval Hallucination Tests
         env:
