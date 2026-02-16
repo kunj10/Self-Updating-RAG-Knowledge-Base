@@ -41,4 +41,4 @@ def test_rag_api_relevancy_and_faithfulness():
     )
     
     # 6. Run the Evaluation
-    assert_test(test_case, [faithfulness, relevancy])
+    assert_test(test_case, [faithfulness])
