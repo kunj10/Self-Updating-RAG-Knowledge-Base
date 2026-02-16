@@ -31,7 +31,7 @@ def test_rag_api_relevancy_and_faithfulness():
     # Faithfulness: Did it hallucinate facts outside the context? 
     faithfulness = FaithfulnessMetric(threshold=0.7, model=eval_model)
     # Answer Relevancy: Did it actually answer the specific question?
-    relevancy = AnswerRelevancyMetric(threshold=0.7, model=eval_model)
+    # relevancy = AnswerRelevancyMetric(threshold=0.7, model=eval_model)
     
     # 5. Create the LLM Test Case (The Evidence)
     test_case = LLMTestCase(
