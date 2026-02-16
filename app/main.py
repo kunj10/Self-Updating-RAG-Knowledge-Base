@@ -42,8 +42,8 @@ def ask_question(request: QueryRequest):
     
     try:
         response = client.models.generate_content(
-            model='gemini-2.0-flash', 
-            contents=prompt,
+            model='gemini-2.5-flash', 
+            contents=prompt,    
         )
         return QueryResponse(answer=response.text, context=KNOWLEDGE_BASE)
     except Exception as e:
