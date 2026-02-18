@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+google-genai
+faiss-cpu
+numpy
+tenacity  # <--- Add this!
+deepeval
+pytest
