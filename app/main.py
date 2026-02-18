@@ -56,23 +56,27 @@ def call_groq_with_retry(prompt):
 async def lifespan(app: FastAPI):
     global vector_db, embed_model, groq_client
 
+    # 1. Always load the local embedding model 
+    logger.info("Loading HuggingFace embedding model (all-MiniLM-L6-v2)...")
+    embed_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+
+    # 2. Always build the FAISS index (runs locally)
+    logger.info("Building FAISS Vector Database...")
+    embeddings = embed_model.encode(KNOWLEDGE_CHUNKS, normalize_embeddings=True)
+    embeddings = np.array(embeddings, dtype=np.float32)
+
+    dimension_size = embeddings.shape[1]  # 384 for all-MiniLM-L6-v2
+    vector_db = faiss.IndexFlatL2(dimension_size)
+    vector_db.add(embeddings)
+    logger.info(f"Successfully loaded {vector_db.ntotal} documents into the Vector DB.")
+
+    # 3. Init Groq client
     api_key = os.getenv("GROQ_API_KEY")
     if api_key:
         groq_client = Groq(api_key=api_key)
-
-        # Load HuggingFace embedding model locally (22MB, zero cost)
-        logger.info("Loading HuggingFace embedding model (all-MiniLM-L6-v2)...")
-        embed_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-
-        logger.info("Building FAISS Vector Database...")
-        embeddings = embed_model.encode(KNOWLEDGE_CHUNKS, normalize_embeddings=True)
-        embeddings = np.array(embeddings, dtype=np.float32)
-
-        # all-MiniLM-L6-v2 produces 384-dimensional vectors
-        dimension_size = embeddings.shape[1]
-        vector_db = faiss.IndexFlatL2(dimension_size)
-        vector_db.add(embeddings)
-        logger.info(f"Successfully loaded {vector_db.ntotal} documents into the Vector DB.")
+        logger.info("Groq client initialized successfully.")
+    else:
+        logger.warning("GROQ_API_KEY not set! LLM calls will fail.")
 
     yield
 
@@ -91,8 +95,10 @@ class QueryResponse(BaseModel):
 
 @app.post("/ask", response_model=QueryResponse)
 def ask_question(request: QueryRequest):
-    if not groq_client or not vector_db or not embed_model:
-        raise HTTPException(status_code=500, detail="Database or Client not initialized")
+    if not embed_model or not vector_db:
+        raise HTTPException(status_code=500, detail="Embedding model or Vector DB not initialized")
+    if not groq_client:
+        raise HTTPException(status_code=500, detail="GROQ_API_KEY not set. Cannot make LLM calls.")
 
     try:
         # 1. Embed the user's question locally
