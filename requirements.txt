@@ -1,8 +1,9 @@
 fastapi
 uvicorn
-google-genai
+sentence-transformers
+groq
 faiss-cpu
 numpy
-tenacity  # <--- Add this!
+tenacity
 deepeval
 pytest

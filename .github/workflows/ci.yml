@@ -28,11 +28,11 @@ jobs:
       - name: Install Dependencies
         run: |
           uv venv
-          uv pip install fastapi uvicorn deepeval pytest google-genai faiss-cpu numpy
+          uv pip install fastapi uvicorn deepeval pytest sentence-transformers groq faiss-cpu numpy tenacity
 
       - name: Run DeepEval Hallucination Tests
         env:
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }} 
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }} 
         run: |
           source .venv/bin/activate
           python -m pytest tests/
